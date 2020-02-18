@@ -1,0 +1,14 @@
+{
+    "name": "standard-api/standard-api",
+    "description": "setup pour une api",
+    "authors": [
+        {
+            "name": "jpb",
+            "email": "jpb@guitaresphere.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "3.*",
+        "phpunit/phpunit": "^8.5"
+    }
+}
