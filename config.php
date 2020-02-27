@@ -3,7 +3,6 @@
 
 require __DIR__.'/vendor/autoload.php';
 
-
 $settings = [
 'settings' => [
     'displayErrorDetails' => true,
@@ -11,44 +10,30 @@ $settings = [
     ]
 ];
 
-
 $app = new \Slim\App($settings);
 
 
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+/*
+ * Add to container PDO, errorHandler, Routes auth, ...
+ */
+$container = $app->getContainer();
 
-// This is the middleware
-// It will add the Access-Control-Allow-Methods header to every request
+/*
+ * PDO connexion to mysql
+ */
+/*$container['pdo'] = function ($container) {
 
-$app->add(function($request, $response, $next) {
-    $route = $request->getAttribute("route");
-    $methods = [];
-    if (!empty($route)) {
-        $pattern = $route->getPattern();
-        foreach ($this->router->getRoutes() as $route) {
-            if ($pattern === $route->getPattern()) {
-                $methods = array_merge_recursive($methods, $route->getMethods());
-            }
-        }
-        //Methods holds all of the HTTP Verbs that a particular route handles.
-    } else {
-        $methods[] = $request->getMethod();
-    }
+    $pdo = new api\classes\database\Database();
 
-    $response = $next($request, $response);
-    return $response->withHeader("Access-Control-Allow-Methods", implode(",", $methods));
-});
+    return $pdo;
+
+};
+*/
 
 
-$app->group('/api/v1/', function () use ($app) {
 
-    $app->get('', function (Request $request, Response $response, Array $args) {
-
-        var_dump($request->getHeader('api_user_token'));
-
-        return $response->withJson("entering v1");
-    });
+include_once __DIR__ . '/secure.php';
 
 
-});
+require  __DIR__ . '/api/router.php';
+

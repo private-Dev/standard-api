@@ -9,6 +9,12 @@
     ],
     "require": {
         "slim/slim": "3.*",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "ramsey/uuid": "^3.9"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "API\\" : "api"
+        }
     }
 }
