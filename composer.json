@@ -15,6 +15,11 @@
     "autoload" : {
         "psr-4" : {
             "API\\" : "api"
-        }
+        },
+        "classmap": [
+            "api/controller",
+            "api/models",
+            "api/classes"
+        ]
     }
 }

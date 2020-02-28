@@ -9,6 +9,7 @@ use PDOException;
  * gère la connexion à la base de donnée
  *
  */
+
 class Database {
     private $_instance = null;
 

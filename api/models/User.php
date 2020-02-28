@@ -5,7 +5,8 @@
  * Date: 26/02/2020
  * Time: 19:07
  */
-namespace api\classes\user;
+namespace api\models\user;
+
 use api\classes\database\Database;
 
 class User

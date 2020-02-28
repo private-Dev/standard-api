@@ -6,9 +6,6 @@
  * Time: 18:47
  */
 
-
-
-//namespace api\secure;
 /*
  *  option requested by browser
  */

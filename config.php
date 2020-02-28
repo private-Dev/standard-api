@@ -1,7 +1,12 @@
 <?php
 
 
+use api\controllers\ApiInfoController\ApiInfoController;
+use api\controllers\UserController\UserController;
+
 require __DIR__.'/vendor/autoload.php';
+include  __DIR__.'/env.php';
+
 
 $settings = [
 'settings' => [
@@ -18,22 +23,24 @@ $app = new \Slim\App($settings);
  */
 $container = $app->getContainer();
 
-/*
- * PDO connexion to mysql
+
+
+/**
+ * @return UserController
  */
-/*$container['pdo'] = function ($container) {
-
-    $pdo = new api\classes\database\Database();
-
-    return $pdo;
-
+$container['UserController'] = function (){
+ return new UserController();
 };
-*/
+
+/**
+ * @return ApiInfoController
+ */
+$container['ApiInfoController'] = function (){
+    return new ApiInfoController();
+};
 
 
 
 include_once __DIR__ . '/secure.php';
-
-
 require  __DIR__ . '/api/router.php';
 
