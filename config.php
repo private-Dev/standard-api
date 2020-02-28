@@ -28,15 +28,17 @@ $container = $app->getContainer();
 /**
  * @return UserController
  */
-$container['UserController'] = function (){
- return new UserController();
+$container['UserController'] = function ($container){
+    // we can pass $container->obj to Ctrl
+    //new UserController($container->view) for example
+ return new UserController($container);
 };
 
 /**
  * @return ApiInfoController
  */
-$container['ApiInfoController'] = function (){
-    return new ApiInfoController();
+$container['ApiInfoController'] = function ($container){
+    return new ApiInfoController($container);
 };
 
 

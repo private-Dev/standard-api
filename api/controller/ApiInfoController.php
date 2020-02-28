@@ -7,10 +7,11 @@
  */
 
 namespace api\controllers\ApiInfoController;
+use api\controllers\Controller\Controller;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ApiInfoController
+class ApiInfoController extends Controller
 {
 
 

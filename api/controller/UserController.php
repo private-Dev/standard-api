@@ -12,18 +12,12 @@ namespace api\controllers\UserController;
 
 
 
+use api\controllers\Controller\Controller;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use api\models\user\User;
 
-class UserController {
-    /**
-     * UserController constructor.
-     */
-    public function __construct()
-    {
-
-    }
+class UserController extends Controller {
 
 
     /**
@@ -45,8 +39,8 @@ class UserController {
     public function avatar(Request $request,Response $response, $args = []){
 
         $value = json_decode($request->getBody());
-        var_dump($value);
-        var_dump($value->email);
+        //var_dump($value);
+        //var_dump($value->email);
 
         return $response->withStatus(200)->write('We want to ckeck Avatar');
     }
