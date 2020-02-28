@@ -16,6 +16,11 @@ class ApiInfoController extends Controller
 
 
     public function info(Request $request,Response $response, $args = []){
+
+        $user = $this->db->table('user')->where('email', 'j@j.com')->first();
+        var_dump($user->email);
+       die();
+
         $result['appName'] = "happyfrenchy";
         $result['version'] = "v1";
         $result['date'] = "27/02/2020";
