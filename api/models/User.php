@@ -1,49 +1,60 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: root-home
- * Date: 26/02/2020
- * Time: 19:07
+ * UserTest: root-home
+ * Date: 28/02/2020
+ * Time: 19:05
  */
-namespace api\models\user;
 
-use api\classes\database\Database;
+namespace api\models\userModel;
 
-class User
+ini_set('display_errors','on');
+error_reporting(E_ALL);
+
+use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
+
+class User extends Model
 {
-    private $_db;
+
+    protected $table = "user";
 
 
-    public function __construct(){
-        $this->_db = new Database();
-    }
+    public function Auth($email, $password)
+    {
 
-    public function Auth($email,$password){
-        $req = $this->_db->getInstance()->prepare('SELECT * FROM user WHERE email = ?');
+        $currentUser =  User::where('email' , $email)->first();
 
-        $req->execute([$email]);
-        $user = $req->fetch();
-        if (!empty($user)){
-            return $user;
+        if (!empty($currentUser)) {
+
             try {
-
                 // on compare le password en base avec le post
-                if (password_verify($password,$user->password)){
-                    $_SESSION['auth'] = $user;
-                    /*
-                      // mise en session des accès Nodes
-                        $this->AuthAccessNode($user);
-                      //GESTION Droit ---------
-                        $this->AuthDroit($user);
-                      // LOG CONNEXION
-                        $this->AuthLog($user);
-                    */
-                }else{
+                if (password_verify($password, $currentUser->password)) {
 
+                    if ($currentUser->token !== NULL){
+
+                        if (date('Y-m-d H:i:s') > $currentUser->token_expire){
+                            $currentUser->token = NULL;
+                        }
+                    }
+                    // get token
+                    if ($currentUser->token == NULL) {
+                        // generate Token
+                        $uuid = Uuid::uuid4()  ;
+                        $currentUser->token = $uuid->toString();
+                        $currentUser->token_expire = date('Y-m-d H:i:s', strtotime( TOKEN_EXPIRATION_DELAY));
+                        $currentUser->save();
+                    }
+
+                    return $currentUser;
+
+                } else {
+                    return 'password failed';
                 }
-            }catch (\Exception $e) {
-
+            } catch (\Exception $e) {
+                return $e;
             }
         }
+
     }
 }
