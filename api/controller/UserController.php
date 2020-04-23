@@ -22,20 +22,41 @@ class UserController extends Controller {
 
 
     /**
+     * premiere apporche , l'utilisateur se log et recupere son token
+     * ce token, couplé avec son email,  servira de pass pour les endpoints
+     * de l'api.
      * @param $requesr
      * @param $response
      */
     public function login(Request $request,Response $response, $args = []){
+        /*
+         extract($args); // create all vars from args
+
+         // extract body vars
+         $value = json_decode($request->getBody());
+         var_dump($value);
+         var_dump($value->email);
+
+         // extracts headers vars
+         $e = $request->getHeader('email')[0];
+         $p =$request->getHeader('password')[0];
+
+       */
+        $u = new User();
+        return $response->withJson($u->Auth($request->getHeader('email')[0],$request->getHeader('password')[0]));
+
+    }
+
+    public function profil(Request $request,Response $response, $args = []){
 
         // extract($args);
         $value = json_decode($request->getBody());
         $u = new User();
 
-        return $response->withJson($u->Auth($value->email,$value->password));
+        //return $response->withJson($u->Auth($value->email,$value->password));
 
 
     }
-
     public function avatar(Request $request,Response $response, $args = []){
 
         $value = json_decode($request->getBody());
@@ -43,5 +64,27 @@ class UserController extends Controller {
         //var_dump($value->email);
 
         return $response->withStatus(200)->write('We want to ckeck Avatar');
+    }
+
+    public function checkToken(Request $request,Response $response, $args = []){
+        //var_dump('entering User ctrl checkToken function');
+       // var_dump($request->getHeader('Authorization'));
+        $return = [
+            'ok'=>empty($this->user) ? false : true,
+            'token'=>$this->user->token,
+        ];
+
+        if(!empty($this->user)) {
+            //$this->pdo->debug=true;
+            $mapper = new UserMapper($this->pdo);
+            $token = $mapper->renewToken($this->user, false, 600);
+            $return['token'] = $token;
+
+        }
+
+
+        return $response->withJson($return);
+
+
     }
 }

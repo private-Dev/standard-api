@@ -1,9 +1,8 @@
 <?php
 
 
-use api\models\user\UserTest;
-use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use api\controllers\ApiInfoController\ApiInfoController;
+use api\controllers\UserController\UserController;
 
 $app->group('/api/v1/votes/', function ()  {});
 
@@ -13,6 +12,8 @@ $app->group('/api/v1/', function ()  {
     $this->get('info',ApiInfoController::class . ':info' );
 
     $this->post('user/login', UserController::class . ':login');
+    $this->get('user/profil', UserController::class . ':profil');
+    $this->get('user/token/check',UserController::class . ':checkToken');
     $this->get('user/avatar', UserController::class .  ':avatar');
 
 });

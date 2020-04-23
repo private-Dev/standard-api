@@ -12,6 +12,7 @@ ini_set('display_errors','on');
 error_reporting(E_ALL);
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
 
 class User extends Model
@@ -20,41 +21,76 @@ class User extends Model
     protected $table = "user";
 
 
+    /**
+     * @param $email
+     * @param $password
+     * @return \Exception|string
+     */
     public function Auth($email, $password)
     {
-
         $currentUser =  User::where('email' , $email)->first();
-
         if (!empty($currentUser)) {
 
             try {
                 // on compare le password en base avec le post
                 if (password_verify($password, $currentUser->password)) {
 
-                    if ($currentUser->token !== NULL){
-
-                        if (date('Y-m-d H:i:s') > $currentUser->token_expire){
-                            $currentUser->token = NULL;
-                        }
-                    }
-                    // get token
                     if ($currentUser->token == NULL) {
-                        // generate Token
-                        $uuid = Uuid::uuid4()  ;
-                        $currentUser->token = $uuid->toString();
-                        $currentUser->token_expire = date('Y-m-d H:i:s', strtotime( TOKEN_EXPIRATION_DELAY));
-                        $currentUser->save();
+                        $this->setToken($currentUser);
                     }
-
+                    if (date('Y-m-d H:i:s') > $currentUser->token_expire){
+                            $this->setToken($currentUser);
+                    }
+                    $currentUser->save();
                     return $currentUser;
 
                 } else {
-                    return 'password failed';
+                    return 'login failed';
                 }
             } catch (\Exception $e) {
                 return $e;
             }
         }
 
+    }
+
+    /**
+     * create a new token  for active connexion
+     * @param User $user
+     * @throws \Exception
+     */
+    public function setToken(User &$user){
+
+        $uuid = Uuid::uuid4()  ;
+        $user->token = $uuid->toString();
+        $user->token_expire = date('Y-m-d H:i:s', strtotime( TOKEN_EXPIRATION_DELAY));
+    }
+
+    /**
+     *
+     */
+    public function checkToken(){
+
+           // var_dump('method checkToken');
+    }
+
+    public  function checkByToken($token,$mail){
+
+
+// Your Eloquent query executed by using get()
+
+
+        $u  = User::where('token' , $token)
+            ->where('email', $mail)
+            ->where('token_expire' , '>' , date('Y-m-d H:i:s'))
+            ->first();
+       $q  = \Illuminate\Database\Capsule\Manager::getQueryLog();
+
+        if ($u){
+            var_dump('user exist');
+        }else{
+            var_dump('NO user exist');
+        }
+        return  $u;
     }
 }
