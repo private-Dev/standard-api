@@ -33,9 +33,11 @@ $app->add(function ($request, $response, $next) {
         // 'user\/login|user\/avatar\/([a-zA-Z0-9]+)|fix\/|^(\/)?tracking\/|explorer|fallback\/([a-z0-9]+)\.([a-z0-9]+)\.([a-z0-9]+)\/([a-zA-Z0-9]+)|^(\/)?205a\/|^(\/)?r237\/'
         $whiteList = 'user\/login|\/info'; //
         preg_match('/' . $whiteList . '/', $request->getUri()->getPath(), $matches);
-        //var_dump('/' . $whiteList . '/');
+
+
+
         if (count($matches) > 0) {
-            //var_dump('we are on white list end Point');
+
             $authorized = true;
         }
         //sinon on doit avoir un tocken que l'on va tester
@@ -66,7 +68,9 @@ $app->add(function ($request, $response, $next) {
     } else {
 
         $response = $next($request, $response);
-        if (!$response->hasHeader('Content-Encoding') && $request->hasHeader('Accept-Encoding') && stristr($request->getHeaderLine('Accept-Encoding'), 'gzip') !== false) {
+        if (!$response->hasHeader('Content-Encoding') && $request->hasHeader('Accept-Encoding')
+            && stristr($request->getHeaderLine('Accept-Encoding'), 'gzip') !== false) {
+
             $compressed = gzencode($response->getBody());
             $stream = fopen('php://memory', 'r+');
             fwrite($stream, $compressed);
@@ -77,10 +81,7 @@ $app->add(function ($request, $response, $next) {
         }
 
         return $response
-            /*  ouvert au 4 vents
-                pour répondre aux besoins d'accés API distant,
-                sécurisation par token
-            */
+            /* sécurisation par token */
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, Time, email')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');

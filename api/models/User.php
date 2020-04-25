@@ -29,8 +29,8 @@ class User extends Model
     public function Auth($email, $password)
     {
         $currentUser =  User::where('email' , $email)->first();
-        if (!empty($currentUser)) {
 
+        if (!empty($currentUser)) {
             try {
                 // on compare le password en base avec le post
                 if (password_verify($password, $currentUser->password)) {
@@ -75,16 +75,11 @@ class User extends Model
     }
 
     public  function checkByToken($token,$mail){
-
-
-// Your Eloquent query executed by using get()
-
-
+            var_dump('api entering checkbytoken');
         $u  = User::where('token' , $token)
             ->where('email', $mail)
             ->where('token_expire' , '>' , date('Y-m-d H:i:s'))
             ->first();
-       $q  = \Illuminate\Database\Capsule\Manager::getQueryLog();
 
         if ($u){
             var_dump('user exist');

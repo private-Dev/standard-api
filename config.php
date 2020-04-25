@@ -61,6 +61,6 @@ $container['ApiInfoController'] = function ($container) {
 
 
 
-include_once __DIR__ . '/secure.php';
-require __DIR__ . '/api/router.php';
+include_once __DIR__ . '/secure.php'; // middleware secure
+require __DIR__ . '/api/router.php'; // rooting
 

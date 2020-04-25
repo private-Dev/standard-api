@@ -14,9 +14,7 @@ class Database {
     private $_instance = null;
 
 
-    /**
-     * Database constructor.
-     */
+
     public function __construct() {
 
 

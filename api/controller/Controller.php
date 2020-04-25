@@ -25,7 +25,7 @@ class Controller
         if ($this->container->{$property}){
             return$this->container->{$property};
         }
-        var_dump($property);
+        //var_dump($property);
     }
 
 }

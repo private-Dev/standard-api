@@ -11,6 +11,7 @@ $app->group('/api/v1/', function ()  {
 
     $this->get('info',ApiInfoController::class . ':info' );
 
+
     $this->post('user/login', UserController::class . ':login');
     $this->get('user/profil', UserController::class . ':profil');
     $this->get('user/token/check',UserController::class . ':checkToken');

@@ -29,21 +29,27 @@ class UserController extends Controller {
      * @param $response
      */
     public function login(Request $request,Response $response, $args = []){
+        //extract($args);
+        $value = json_decode($request->getBody());
+        //var_dump($value->password,$value->email);
+
+
+         //var_dump($args);
+
+        // create all vars from args
         /*
-         extract($args); // create all vars from args
+                 // extract body vars
+                 $value = json_decode($request->getBody());
+                 var_dump($value);
+                 var_dump($value->email);
 
-         // extract body vars
-         $value = json_decode($request->getBody());
-         var_dump($value);
-         var_dump($value->email);
+                 // extracts headers vars
+                 $e = $request->getHeader('email')[0];
+                 $p =$request->getHeader('password')[0];
 
-         // extracts headers vars
-         $e = $request->getHeader('email')[0];
-         $p =$request->getHeader('password')[0];
-
-       */
+               */
         $u = new User();
-        return $response->withJson($u->Auth($request->getHeader('email')[0],$request->getHeader('password')[0]));
+        return $response->withJson($u->Auth($value->email,$value->password));
 
     }
 
@@ -67,14 +73,21 @@ class UserController extends Controller {
     }
 
     public function checkToken(Request $request,Response $response, $args = []){
+
+        var_dump($request->getHeaders());
+       // var_dump($this);die();
         //var_dump('entering User ctrl checkToken function');
        // var_dump($request->getHeader('Authorization'));
+        //var_dump("check tocken api",$this->user);
         $return = [
-            'ok'=>empty($this->user) ? false : true,
-            'token'=>$this->user->token,
+            //'ok'=>empty($this->user) ? false : true,
+            //'token'=>$this->user->token,
+            'ok' => true,
+            'token'=> 'zeff5',
         ];
-
+  /*
         if(!empty($this->user)) {
+
             //$this->pdo->debug=true;
             $mapper = new UserMapper($this->pdo);
             $token = $mapper->renewToken($this->user, false, 600);
@@ -82,7 +95,7 @@ class UserController extends Controller {
 
         }
 
-
+*/
         return $response->withJson($return);
 
 
