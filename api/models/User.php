@@ -75,17 +75,13 @@ class User extends Model
     }
 
     public  function checkByToken($token,$mail){
-            var_dump('api entering checkbytoken');
+
         $u  = User::where('token' , $token)
             ->where('email', $mail)
             ->where('token_expire' , '>' , date('Y-m-d H:i:s'))
             ->first();
 
-        if ($u){
-            var_dump('user exist');
-        }else{
-            var_dump('NO user exist');
-        }
-        return  $u;
+        return $u ? true : false ;
+
     }
 }

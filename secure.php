@@ -51,7 +51,7 @@ $app->add(function ($request, $response, $next) {
                 $user  = new User();
                 $currentUserToken = $user->checkByToken($tokenAuth[0],$mail[0]);
                 if (!empty($currentUserToken)) {
-                    var_dump('we are secure and logged');
+                    //var_dump('we are secure and logged');
                     $authorized = true;
                 }
             }

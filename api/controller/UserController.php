@@ -74,30 +74,16 @@ class UserController extends Controller {
 
     public function checkToken(Request $request,Response $response, $args = []){
 
-        var_dump($request->getHeaders());
-       // var_dump($this);die();
-        //var_dump('entering User ctrl checkToken function');
-       // var_dump($request->getHeader('Authorization'));
-        //var_dump("check tocken api",$this->user);
-        $return = [
-            //'ok'=>empty($this->user) ? false : true,
-            //'token'=>$this->user->token,
-            'ok' => true,
-            'token'=> 'zeff5',
-        ];
-  /*
-        if(!empty($this->user)) {
+        $u = new User();
 
-            //$this->pdo->debug=true;
-            $mapper = new UserMapper($this->pdo);
-            $token = $mapper->renewToken($this->user, false, 600);
-            $return['token'] = $token;
+        $r = $u->checkByToken($request->getHeader('Authorization')[0],$request->getHeader('email')[0]);
 
-        }
+            $return = [
+                "ok" => $r,
+                "token" => $request->getHeader('Authorization')[0],
+            ];
 
-*/
+
         return $response->withJson($return);
-
-
     }
 }

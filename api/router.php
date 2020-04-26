@@ -7,19 +7,25 @@ use api\controllers\UserController\UserController;
 $app->group('/api/v1/votes/', function ()  {});
 
 
-$app->group('/api/v1/', function ()  {
+$app->group('/api/v1/', function () use ($app) {
+    /*      INFO    */
+    $app->get('info',ApiInfoController::class . ':info' );
+    /*      USERS    */
+    $this->group('user/', function () use ($app) {
 
-    $this->get('info',ApiInfoController::class . ':info' );
+        $app->post('login', UserController::class . ':login');
+        $app->get('token/check',UserController::class . ':checkToken');
 
+        $app->get('profil', UserController::class . ':profil');
+        $app->get('avatar', UserController::class .  ':avatar');
 
-    $this->post('user/login', UserController::class . ':login');
-    $this->get('user/profil', UserController::class . ':profil');
-    $this->get('user/token/check',UserController::class . ':checkToken');
-    $this->get('user/avatar', UserController::class .  ':avatar');
+    });
+    /*      administration    */
+    $app->group('/admin/', function () use ($app) {});
 
 });
 
-$app->group('/api/v1/admin/', function ()  {});
+
 
 
 
